@@ -1,0 +1,175 @@
+:root{
+  --bg: #0b1220;
+}
+
+body{
+  background: radial-gradient(1200px 600px at 20% 10%, #1a2a5a 0%, var(--bg) 55%, #070b14 100%);
+}
+
+.board{
+  --cell: clamp(36px, 9vw, 56px);
+  --grid-size: 8;
+  width: calc(var(--cell) * var(--grid-size));
+  height: calc(var(--cell) * var(--grid-size));
+  position: relative;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 50px rgba(0,0,0,0.35);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.grid-block{
+  position: absolute;
+  width: var(--cell);
+  height: var(--cell);
+  left: 0;
+  top: 0;
+}
+
+.blocker{
+  position:absolute;
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: 10px;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.08) 0px,
+    rgba(255,255,255,0.08) 6px,
+    rgba(0,0,0,0.12) 6px,
+    rgba(0,0,0,0.12) 12px
+  );
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.08);
+}
+
+.locked-badge{
+  position:absolute;
+  right: 5px;
+  bottom: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.92);
+  background: rgba(0,0,0,0.35);
+  padding: 2px 6px;
+  border-radius: 999px;
+  pointer-events:none;
+}
+
+.candy-sprite{
+  position:absolute;
+  width: var(--cell);
+  height: var(--cell);
+  left: 0;
+  top: 0;
+  transform: translate(0px, 0px);
+  border-radius: 14px;
+  transition: transform 170ms ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+
+.candy-sprite.locked{
+  cursor: default;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.18);
+}
+
+.candy-sprite.special-stripedH::before,
+.candy-sprite.special-stripedV::before{
+  content:"";
+  position:absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.0) 0px,
+    rgba(255,255,255,0.0) 7px,
+    rgba(255,255,255,0.33) 7px,
+    rgba(255,255,255,0.33) 14px
+  );
+  opacity: 0.65;
+  pointer-events:none;
+}
+
+.candy-sprite.special-stripedV::before{
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.0) 0px,
+    rgba(255,255,255,0.0) 7px,
+    rgba(255,255,255,0.33) 7px,
+    rgba(255,255,255,0.33) 14px
+  );
+}
+
+.candy-sprite.special-bomb::before{
+  content:"";
+  position:absolute;
+  inset: 0;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.0) 35%),
+    radial-gradient(circle at 60% 70%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.0) 45%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.0) 0px, rgba(255,255,255,0.0) 8px, rgba(255,255,255,0.25) 8px, rgba(255,255,255,0.25) 12px);
+  opacity: 0.7;
+  pointer-events:none;
+}
+
+.candy-sprite.highlight{
+  box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.35), inset 0 0 0 2px rgba(255,255,255,0.25);
+}
+
+.candy-sprite.exploding{
+  animation: candyPop 160ms ease forwards;
+}
+
+@keyframes candyPop{
+  0%{ transform: translate(var(--tx), var(--ty)) scale(1); opacity: 1; }
+  100%{ transform: translate(var(--tx), var(--ty)) scale(0.75); opacity: 0; }
+}
+
+.board-overlay{
+  position:absolute;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.35);
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.overlay-card{
+  width: min(360px, 90%);
+  background: rgba(30,38,60,0.95);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.modal-overlay{
+  position:fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 1000;
+}
+.modal-card{
+  width: min(460px, 92vw);
+  background: rgba(30,38,60,0.98);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+.modal-overlay.d-none,
+.board-overlay.d-none{
+  display:none !important;
+}
+

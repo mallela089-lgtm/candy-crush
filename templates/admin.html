@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin - Candy Crush Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/css/styles.css" rel="stylesheet" />
+  </head>
+  <body class="bg-dark text-light">
+    <div class="container py-3">
+      <header class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+          <div class="fw-bold fs-3 text-warning">Candy Crush Admin</div>
+          <div class="text-muted small">Manage levels, config, and view basic analytics.</div>
+        </div>
+        <a class="btn btn-outline-light btn-sm" href="/">Back to Game</a>
+      </header>
+
+      <div class="row g-3">
+        <div class="col-12 col-lg-4">
+          <div class="card bg-secondary border-0 shadow-sm">
+            <div class="card-body">
+              <div class="fw-bold mb-2">Game Config</div>
+              <div class="mb-2">
+                <label class="form-label" for="cfg-grid">Grid Size</label>
+                <input id="cfg-grid" class="form-control" type="number" min="6" max="12" />
+              </div>
+              <div class="mb-2">
+                <label class="form-label" for="cfg-candy">Candy Types</label>
+                <input id="cfg-candy" class="form-control" type="number" min="5" max="10" />
+              </div>
+              <div class="mb-2">
+                <label class="form-label" for="cfg-base-score">Base Score / Candy</label>
+                <input id="cfg-base-score" class="form-control" type="number" min="1" />
+              </div>
+              <div class="mb-2">
+                <label class="form-label" for="cfg-combo-bonus">Combo Bonus / Combo</label>
+                <input id="cfg-combo-bonus" class="form-control" type="number" min="0" />
+              </div>
+              <div class="mb-2">
+                <label class="form-label" for="cfg-cascade-bonus">Cascade Bonus / Cascade</label>
+                <input id="cfg-cascade-bonus" class="form-control" type="number" min="0" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="cfg-max-mult">Max Combo Multiplier</label>
+                <input id="cfg-max-mult" class="form-control" type="number" min="1" />
+              </div>
+              <button id="btn-save-config" class="btn btn-warning w-100">Save Config</button>
+              <div class="text-muted small mt-2" id="cfg-msg"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+          <div class="card bg-secondary border-0 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                  <div class="fw-bold mb-1">Analytics</div>
+                  <div class="text-muted small">Total plays and completion stats.</div>
+                </div>
+                <button id="btn-reset-levels" class="btn btn-outline-warning btn-sm">Reset Levels</button>
+              </div>
+              <div class="mt-3">
+                <div class="text-muted small">Total plays: <span id="stats-total-plays">0</span></div>
+              </div>
+
+              <div class="mt-3 table-responsive" style="max-height: 300px; overflow: auto;">
+                <table class="table table-dark table-striped align-middle">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>Attempts</th>
+                      <th>Completions</th>
+                      <th>Completion Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stats-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card bg-secondary border-0 shadow-sm mt-3">
+            <div class="card-body">
+              <div class="fw-bold mb-2">Level Manager</div>
+
+              <form id="form-create-level" class="row g-2 align-items-end">
+                <div class="col-12 col-sm-3">
+                  <label class="form-label">Level #</label>
+                  <input class="form-control" id="create-level-number" type="number" min="1" />
+                </div>
+                <div class="col-12 col-sm-3">
+                  <label class="form-label">Time Limit (sec)</label>
+                  <input class="form-control" id="create-time-limit" type="number" min="5" />
+                </div>
+                <div class="col-12 col-sm-3">
+                  <label class="form-label">Target Score</label>
+                  <input class="form-control" id="create-target-score" type="number" min="0" />
+                </div>
+                <div class="col-12 col-sm-3">
+                  <label class="form-label">Objective Clear (#)</label>
+                  <input class="form-control" id="create-objective-clear" type="number" min="0" />
+                </div>
+
+                <div class="col-12 col-sm-2">
+                  <label class="form-label">Difficulty</label>
+                  <input class="form-control" id="create-difficulty" type="number" min="1" />
+                </div>
+                <div class="col-12 col-sm-2">
+                  <label class="form-label">Blockers</label>
+                  <input class="form-control" id="create-blocker-count" type="number" min="0" />
+                </div>
+                <div class="col-12 col-sm-2">
+                  <label class="form-label">Locked Candies</label>
+                  <input class="form-control" id="create-locked-count" type="number" min="0" />
+                </div>
+                <div class="col-12 col-sm-2">
+                  <label class="form-label">Locked Health</label>
+                  <input class="form-control" id="create-locked-health" type="number" min="1" />
+                </div>
+                <div class="col-12 col-sm-2">
+                  <label class="form-label">Pattern Seed</label>
+                  <input class="form-control" id="create-pattern-seed" type="number" min="0" />
+                </div>
+                <div class="col-12 col-sm-2">
+                  <button type="submit" class="btn btn-warning w-100">Create Level</button>
+                </div>
+              </form>
+
+              <div class="text-muted small mt-2" id="create-msg"></div>
+
+              <hr class="border-secondary" />
+
+              <div class="table-responsive" style="max-height: 260px; overflow: auto;">
+                <table class="table table-dark table-hover align-middle">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>Time</th>
+                      <th>Target Score</th>
+                      <th>Clear Objective</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="levels-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card bg-secondary border-0 shadow-sm mt-3">
+            <div class="card-body">
+              <div class="fw-bold mb-2">Edit Level</div>
+              <div class="row g-2">
+                <div class="col-12 col-md-2">
+                  <label class="form-label">Level ID</label>
+                  <input class="form-control" id="edit-level-id" type="number" disabled />
+                </div>
+                <div class="col-12 col-md-3">
+                  <label class="form-label">Time Limit (sec)</label>
+                  <input class="form-control" id="edit-time-limit" type="number" />
+                </div>
+                <div class="col-12 col-md-3">
+                  <label class="form-label">Target Score</label>
+                  <input class="form-control" id="edit-target-score" type="number" />
+                </div>
+                <div class="col-12 col-md-2">
+                  <label class="form-label">Objective Clear (#)</label>
+                  <input class="form-control" id="edit-objective-clear" type="number" />
+                </div>
+                <div class="col-12 col-md-2">
+                  <label class="form-label">Difficulty</label>
+                  <input class="form-control" id="edit-difficulty" type="number" />
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <label class="form-label">Blockers</label>
+                  <input class="form-control" id="edit-blocker-count" type="number" />
+                </div>
+                <div class="col-12 col-md-2">
+                  <label class="form-label">Locked Candies</label>
+                  <input class="form-control" id="edit-locked-count" type="number" />
+                </div>
+                <div class="col-12 col-md-2">
+                  <label class="form-label">Locked Health</label>
+                  <input class="form-control" id="edit-locked-health" type="number" />
+                </div>
+                <div class="col-12 col-md-3">
+                  <label class="form-label">Pattern Seed</label>
+                  <input class="form-control" id="edit-pattern-seed" type="number" />
+                </div>
+
+                <div class="col-12 col-md-3 d-flex gap-2">
+                  <button id="btn-save-level" class="btn btn-warning flex-grow-1">Save Changes</button>
+                  <button id="btn-delete-level" class="btn btn-outline-danger flex-grow-1">Delete</button>
+                </div>
+              </div>
+
+              <div class="text-muted small mt-2" id="edit-msg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-muted small mt-3">
+        Note: This dashboard intentionally uses hidden routing only (no authentication).
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/admin.js"></script>
+  </body>
+</html>
+
